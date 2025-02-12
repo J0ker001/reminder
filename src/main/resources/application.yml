@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: reminder
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/rdb
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:liquibase/changelog.yml
+  mail:
+    host: smtp.mail.ru
+    port: 465
+    username: YourEmail@mail.ru
+    password: YouPasswordEmail
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+            ssl:
+              enable: true
+            default-encoding: UTF-8
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: Your_Client-id_Google
+            client-secret: Your_Client-secret_Google
+            scope:
+             - email
+             - profile
+          github:
+            client-id: Your_Client-id_Google
+            client-secret: Your_Client-secret_Google
+            scope:
+              - user
+              - read:user
+logging:
+  file:
+    name: app-logs
+    path: /logs/

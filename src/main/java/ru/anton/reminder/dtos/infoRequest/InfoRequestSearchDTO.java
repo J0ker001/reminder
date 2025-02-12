@@ -1,0 +1,20 @@
+package ru.anton.reminder.dtos.infoRequest;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class InfoRequestSearchDTO {
+    private String title;
+    private String description;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime remind;
+}

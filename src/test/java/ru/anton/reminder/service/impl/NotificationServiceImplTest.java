@@ -49,35 +49,31 @@ class NotificationServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Создаем тестового пользователя
+
         user = User.builder()
                 .id(1L)
                 .email("test@example.com")
                 .telegramID("telegramId123")
                 .build();
 
-        // Создаем напоминание
+
         reminder = Reminder.builder()
                 .id(1L)
                 .user_id(1L)
                 .title("Test Reminder")
                 .description("This is a test reminder")
-                .remind(LocalDateTime.now().minusMinutes(1))  // Напоминание должно быть выполнено
-                .isSent(false)  // Напоминание еще не отправлено
+                .remind(LocalDateTime.now().minusMinutes(1))
+                .isSent(false)
                 .build();
     }
 
     @Test
     void testCheckAndSendNotifications_WhenReminderIsValid_ShouldSendNotifications() {
-        // Arrange
         when(reminderRepository.findByRemindBefore(any(LocalDateTime.class))).thenReturn(Arrays.asList(reminder));
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
-
-        // Act
         notificationService.checkAndSendNotifications();
 
-        // Assert
         verify(reminderRepository, times(1)).findByRemindBefore(any(LocalDateTime.class)); // Проверка вызова репозитория для получения напоминаний
         verify(userRepository, times(1)).findById(1L); // Проверка вызова репозитория для получения пользователя
         verify(reminderService, times(1)).markAsSent(reminder); // Проверка, что напоминание помечено как отправленное
@@ -87,14 +83,11 @@ class NotificationServiceImplTest {
 
     @Test
     void testCheckAndSendNotifications_WhenReminderIsAlreadySent_ShouldNotSendNotifications() {
-        // Arrange
-        reminder.setSent(true);  // Устанавливаем, что напоминание уже отправлено
+        reminder.setSent(true);
         when(reminderRepository.findByRemindBefore(any(LocalDateTime.class))).thenReturn(Arrays.asList(reminder));
 
-        // Act
         notificationService.checkAndSendNotifications();
 
-        // Assert
         verify(reminderRepository, times(1)).findByRemindBefore(any(LocalDateTime.class)); // Проверка вызова репозитория для получения напоминаний
         verify(reminderService, never()).markAsSent(any(Reminder.class)); // Убедимся, что напоминание не было помечено как отправленное
         verify(emailService, never()).sendEmail(anyString(), anyString(), anyString()); // Убедимся, что email не был отправлен
@@ -103,14 +96,11 @@ class NotificationServiceImplTest {
 
     @Test
     void testCheckAndSendNotifications_WhenUserNotFound_ShouldNotSendNotifications() {
-        // Arrange
         when(reminderRepository.findByRemindBefore(any(LocalDateTime.class))).thenReturn(Arrays.asList(reminder));
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty()); // Пользователь не найден
 
-        // Act
         notificationService.checkAndSendNotifications();
 
-        // Assert
         verify(userRepository, times(1)).findById(1L); // Проверка вызова репозитория для получения пользователя
         verify(reminderService, never()).markAsSent(any(Reminder.class)); // Напоминание не должно быть помечено как отправленное
         verify(emailService, never()).sendEmail(anyString(), anyString(), anyString()); // Email не отправлен
@@ -119,13 +109,10 @@ class NotificationServiceImplTest {
 
     @Test
     void testCheckAndSendNotifications_WhenReminderListIsEmpty_ShouldNotSendNotifications() {
-        // Arrange
         when(reminderRepository.findByRemindBefore(any(LocalDateTime.class))).thenReturn(Arrays.asList()); // Пустой список напоминаний
 
-        // Act
         notificationService.checkAndSendNotifications();
 
-        // Assert
         verify(reminderRepository, times(1)).findByRemindBefore(any(LocalDateTime.class)); // Проверка вызова репозитория
         verify(userRepository, never()).findById(anyLong()); // Не должно быть вызова репозитория для получения пользователя
         verify(reminderService, never()).markAsSent(any(Reminder.class)); // Напоминание не должно быть помечено как отправленное

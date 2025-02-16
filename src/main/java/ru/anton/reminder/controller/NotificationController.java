@@ -1,23 +1,24 @@
 package ru.anton.reminder.controller;
 
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.anton.reminder.dtos.infoRequest.InfoRequestSendTelegramDTO;
+import ru.anton.reminder.dtos.infoRequest.infoRequestSendEmailDTO;
 import ru.anton.reminder.service.EmailService;
 import ru.anton.reminder.service.NotificationService;
 import ru.anton.reminder.service.TelegramService;
 
 @RestController
 @RequestMapping("/domain/api/v1/notifications")
+@RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
     private final TelegramService telegramService;
     private final EmailService emailService;
-
-    public NotificationController(NotificationService notificationService, TelegramService telegramService,
-                                  EmailService emailService) {
-        this.notificationService = notificationService;
-        this.telegramService = telegramService;
-        this.emailService = emailService;
-    }
 
     @PostMapping("/send")
     public String triggerNotifications() {
@@ -26,15 +27,12 @@ public class NotificationController {
     }
 
     @GetMapping("/sendEmail")
-    public String sendEmail(String to, String subject, String text) {
-       return emailService.sendEmail(to, subject, text);
-
+    public String sendEmail(@RequestBody infoRequestSendEmailDTO info) {
+        return emailService.sendEmail(info.getTo(), info.getSubject(), info.getText());
     }
 
     @GetMapping("/sendTelegram")
-    public String sendTelegramMessage(@RequestParam String chatId,
-                                      @RequestParam String title,
-                                      @RequestParam String description) {
-       return telegramService.sendTelegramMessage(chatId, title, description);
+    public String sendTelegramMessage(@RequestBody InfoRequestSendTelegramDTO info) {
+        return telegramService.sendTelegramMessage(info.getChatId(), info.getTitle(), info.getDescription());
     }
 }

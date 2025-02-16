@@ -1,11 +1,14 @@
+telegram:
+  api-url: ${TELEGRAM_API_URL:https://api.telegram.org/bot${telegram.bot-token}/sendMessage}
+  bot-token: ${TELEGRAM_BOT_TOKEN:YOUR_TELEGRAM_BOT_TOKEN}
 spring:
   application:
     name: reminder
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/rdb
-    username: root
-    password: root
+    url: ${DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${NAME_DB:rdb}}
+    username: ${DB_USERNAME:YOUR_DB_USERNAME}
+    password:  ${DB_PASSWORD:YOUR_DB_PASSWORD}
   jpa:
     show-sql: true
     hibernate:
@@ -15,8 +18,8 @@ spring:
   mail:
     host: smtp.mail.ru
     port: 465
-    username: YourEmail@mail.ru
-    password: YouPasswordEmail
+    username: ${EMAIL_USER_NAME:YOUR_EMAIL_USER_NAME}
+    password: ${EMAIL_PASSWORD:YOUR_EMAIL_PASSWORD}
     protocol: smtps
     properties:
       mail:
@@ -33,14 +36,14 @@ spring:
       client:
         registration:
           google:
-            client-id: Your_Client-id_Google
-            client-secret: Your_Client-secret_Google
+            client-id: ${GOOGLE_CLIENT_ID:YOUR_GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET:YOUR_GOOGLE_CLIENT_SECRET}
             scope:
              - email
              - profile
           github:
-            client-id: Your_Client-id_Google
-            client-secret: Your_Client-secret_Google
+            client-id: ${GITHUB_CLIENT_ID:YOUR_GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET:YOUR_GITHUB_CLIENT_SECRET}
             scope:
               - user
               - read:user

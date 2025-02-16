@@ -1,5 +1,7 @@
 package ru.anton.reminder.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -12,20 +14,14 @@ import ru.anton.reminder.service.NotificationService;
 import ru.anton.reminder.service.ReminderService;
 import ru.anton.reminder.service.TelegramService;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
-
     private final ReminderRepository reminderRepository;
     private final UserRepository userRepository;
     private final ReminderService reminderService;
     private final EmailService emailService;
     private final TelegramService telegramService;
-
 
     @Override
     @Scheduled(fixedRate = 60000)

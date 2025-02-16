@@ -1,25 +1,22 @@
 package ru.anton.reminder.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.domain.Page;
-import ru.anton.reminder.dtos.infoRequest.*;
-import ru.anton.reminder.dtos.ReminderDTO;
 import ru.anton.reminder.entity.Reminder;
 
-import java.util.List;
-
 public interface ReminderService {
+    Reminder createOrUpdateReminder(Reminder reminder);
 
-    ReminderDTO createOrUpdateReminder(ReminderDTO reminderDTO);
+    String deleteReminder(Long id);
 
-    String deleteReminder(InfoRequestDeletedDTO info);
+    List<Reminder> searchReminders(String title, String description, LocalDateTime remind);
 
-    List<Reminder> searchReminders(InfoRequestSearchDTO info);
+    List<Reminder> sortReminders(String nameOrDateOrTime);
 
-    List<Reminder> sortReminders(InfoRequestSortDTO info);
+    List<Reminder> filterReminders(String dateOrTime, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    List<Reminder> filterReminders(InfoRequestFilterDTO info);
-
-    Page<Reminder> getAllOrByDate(InfoRequestByDateDTO info, int page, int size);
+    Page<Reminder> getAllOrByDate(String totalOrCurrent, LocalDateTime dateTime, int page, int size);
 
     void markAsSent(Reminder reminder);
 }

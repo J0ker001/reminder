@@ -1,6 +1,9 @@
 package ru.anton.reminder.repository;
 
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,15 +12,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.anton.reminder.entity.Reminder;
 
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-
 @Repository
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
-
     List<Reminder> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrRemind(
             String title, String description, LocalDateTime remind);
 
@@ -41,5 +37,4 @@ public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     Page<Reminder> findByRemindDay(@Param("date") LocalDate date, Pageable pageable);
 
     List<Reminder> findByRemindBefore(LocalDateTime now);
-
 }

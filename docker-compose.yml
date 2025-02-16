@@ -2,15 +2,19 @@ version: '3.8'
 
 services:
   app:
+    image: my-777-app
+    container_name: 777-app
+    env_file:
+      - set.env
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/rdb
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+#    environment:
+#      - SPRING_DATASOURCE_URL=${DB_URL}
+#      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+#      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     depends_on:
       - db
     networks:
@@ -18,10 +22,10 @@ services:
 
   db:
     image: postgres:13
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: rdb
+#    environment:
+#      POSTGRES_USER: ${DB_USERNAME}
+#      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#      POSTGRES_DB: ${NAME_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

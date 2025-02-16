@@ -9,6 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class InfoRequestSortDTO {
-    private String nameOrDateOrTime;
+public class infoRequestSendEmailDTO {
+    private String to;
+    private String subject;
+    private String text;
 }

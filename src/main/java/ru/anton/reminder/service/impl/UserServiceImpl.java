@@ -1,22 +1,17 @@
 package ru.anton.reminder.service.impl;
 
-
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.anton.reminder.dtos.infoRequest.InfoRequestAddTelegramIdDTO;
-import ru.anton.reminder.dtos.infoRequest.InfoRequestDeletedDTO;
 import ru.anton.reminder.entity.User;
 import ru.anton.reminder.repository.UserRepository;
 import ru.anton.reminder.service.UserService;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
 
     @Override
@@ -35,25 +30,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String delete(InfoRequestDeletedDTO info) {
-        if (!userRepository.existsById(info.getId())) {
+    public String delete(Long id) {
+        if (!userRepository.existsById(id)) {
             return "Invalid user id, try again";
         }
-        userRepository.deleteById(info.getId());
-        return "User with " + "Id = " + info.getId() + " deleted";
+        userRepository.deleteById(id);
+        return "User with " + "Id = " + id + " deleted";
     }
 
     @Override
-    public String addTelegramID(InfoRequestAddTelegramIdDTO info) {
-        if (!isValidTelegramId(info.getTelegramId())) {
+    public String addTelegramID(Long id, String telegramId) {
+        if (!isValidTelegramId(telegramId)) {
             log.info("Invalid telegram id, try again");
             return "Invalid telegram id, try again";
         }
-        User user = userRepository.findById(info.getId()).get();
-        user.setTelegramID(info.getTelegramId());
+        User user = userRepository.findById(id).get();
+        user.setTelegramID(telegramId);
         userRepository.save(user);
-        log.info("{} TelegramID added", info.getTelegramId());
-        return info.getTelegramId() + " TelegramID added";
+        log.info("{} TelegramID added", telegramId);
+        return telegramId + " TelegramID added";
     }
 
     private boolean isValidTelegramId(String telegramID) {

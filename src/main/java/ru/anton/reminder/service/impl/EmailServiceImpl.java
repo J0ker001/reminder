@@ -13,7 +13,6 @@ import ru.anton.reminder.service.EmailService;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailServiceImpl implements EmailService {
-
     private final JavaMailSender mailSender;
 
     @Override

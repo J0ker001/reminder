@@ -1,5 +1,6 @@
-package ru.anton.reminder.dtos.infoRequest;
+package ru.anton.reminder.dtos;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class InfoRequestSortDTO {
-    private String nameOrDateOrTime;
+public class ErrorResponseDTO {
+    private String message;
+    private Map<String, String> errors;
 }

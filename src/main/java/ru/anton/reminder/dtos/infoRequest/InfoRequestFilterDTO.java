@@ -13,8 +13,10 @@ import lombok.Setter;
 @Setter
 public class InfoRequestFilterDTO {
     String dateOrTime;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTimeStart;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTimeEnd;
 }

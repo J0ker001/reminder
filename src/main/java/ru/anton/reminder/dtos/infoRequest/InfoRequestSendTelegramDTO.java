@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class InfoRequestSendTelegramDTO {
     private String chatId;
+
     private String title;
+
     private String description;
 }

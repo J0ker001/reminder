@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 public class InfoRequestByDateDTO {
     String totalOrCurrent;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime dateTime;
 }

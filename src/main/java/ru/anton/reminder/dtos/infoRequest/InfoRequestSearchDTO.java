@@ -13,7 +13,9 @@ import lombok.Setter;
 @Setter
 public class InfoRequestSearchDTO {
     private String title;
+
     private String description;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime remind;
 }

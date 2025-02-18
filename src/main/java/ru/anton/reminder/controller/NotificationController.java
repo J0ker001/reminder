@@ -27,8 +27,8 @@ public class NotificationController {
     }
 
     @GetMapping("/sendEmail")
-    public String sendEmail(@RequestBody infoRequestSendEmailDTO info) {
-        return emailService.sendEmail(info.getTo(), info.getSubject(), info.getText());
+    public void sendEmail(@RequestBody infoRequestSendEmailDTO info) {
+        emailService.sendEmail(info.getTo(), info.getSubject(), info.getText());
     }
 
     @GetMapping("/sendTelegram")

@@ -11,7 +11,6 @@ import ru.anton.reminder.service.TelegramService;
 @RequiredArgsConstructor
 @Slf4j
 public class TelegramServiceImpl implements TelegramService {
-
     @Value("${telegram.api-url}")
     private String TELEGRAM_API_URL;
 

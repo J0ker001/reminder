@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${NAME_DB:rdb}}
-    username: ${DB_USERNAME:YOUR_DB_USERNAME}
-    password:  ${DB_PASSWORD:YOUR_DB_PASSWORD}
+    username: ${DB_USERNAME:root}
+    password:  ${DB_PASSWORD:root}
   jpa:
     show-sql: true
     hibernate:

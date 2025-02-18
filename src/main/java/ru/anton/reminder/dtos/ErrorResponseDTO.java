@@ -12,5 +12,6 @@ import lombok.Setter;
 @Setter
 public class ErrorResponseDTO {
     private String message;
+
     private Map<String, String> errors;
 }

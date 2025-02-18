@@ -19,8 +19,8 @@ import ru.anton.reminder.dtos.infoRequest.InfoRequestFilterDTO;
 import ru.anton.reminder.dtos.infoRequest.InfoRequestGetTotalOrCurrent;
 import ru.anton.reminder.dtos.infoRequest.InfoRequestSearchDTO;
 import ru.anton.reminder.dtos.infoRequest.InfoRequestSortDTO;
+import ru.anton.reminder.dtos.infoRequest.PageDTO;
 import ru.anton.reminder.entity.Reminder;
-import ru.anton.reminder.mappers.CreateReminderMapper;
 import ru.anton.reminder.mappers.ReminderMapper;
 import ru.anton.reminder.service.ReminderService;
 
@@ -30,7 +30,6 @@ import ru.anton.reminder.service.ReminderService;
 public class ReminderController {
     private final ReminderService reminderService;
     private final ReminderMapper reminderMapper;
-    private final CreateReminderMapper createReminderMapper;
 
     @GetMapping
     public String welcome() {
@@ -39,7 +38,7 @@ public class ReminderController {
 
     @PostMapping("/reminder/create")
     public ResponseEntity<ReminderDTO> createReminder(@Valid @RequestBody CreateReminderDTO createReminderDTO) {
-        Reminder reminder = createReminderMapper.toEntity(createReminderDTO);
+        Reminder reminder = reminderMapper.toEntity(createReminderDTO);
         ReminderDTO reminderDTO = reminderMapper.toDTO(reminderService.createOrUpdateReminder(reminder));
         return new ResponseEntity<>(reminderDTO, HttpStatus.CREATED);
     }
@@ -67,8 +66,13 @@ public class ReminderController {
     }
 
     @GetMapping("/list")
-    public Page<Reminder> getAllOrByDate(@RequestBody InfoRequestGetTotalOrCurrent info) {
-        return reminderService.getAllOrByDate(info.getTotalOrCurrent(), info.getDateTime(),
-                info.getPage(), info.getSize());
+    public PageDTO getAllOrByDate(@RequestBody InfoRequestGetTotalOrCurrent info) {
+        Page<Reminder> reminders = reminderService.getAllOrByDate(info.getTotalOrCurrent(),
+                info.getDateTime(), info.getPage(), info.getSize());
+        Page<ReminderDTO> page = reminders.map(reminderMapper::toDTO);
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setPage(page);
+        pageDTO.setLastPage(page.isLast());
+        return pageDTO;
     }
 }

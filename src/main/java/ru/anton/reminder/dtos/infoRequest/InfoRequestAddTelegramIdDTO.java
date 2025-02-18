@@ -11,5 +11,6 @@ import lombok.Setter;
 @Setter
 public class InfoRequestAddTelegramIdDTO {
     Long id;
+
     String telegramId;
 }

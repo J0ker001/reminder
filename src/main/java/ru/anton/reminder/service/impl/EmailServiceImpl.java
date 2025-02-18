@@ -16,8 +16,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
 
     @Override
-    public String sendEmail(String to, String subject, String text) {
-
+    public void sendEmail(String to, String subject, String text) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -30,11 +29,9 @@ public class EmailServiceImpl implements EmailService {
             mailSender.send(message);
 
             log.info("Email successfully sent to {}", to);
-            return "Email successfully sent to " + to;
         } catch (MessagingException e) {
             e.printStackTrace();
             log.info("Error sending email: {}", e.getMessage());
-            return "Error sending email, contact support ";
         }
     }
 }

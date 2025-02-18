@@ -27,15 +27,18 @@ public class NotificationServiceImpl implements NotificationService {
     @Scheduled(fixedRate = 60000)
     public void checkAndSendNotifications() {
         LocalDateTime now = LocalDateTime.now();
-        List<Reminder> reminders = reminderRepository.findByRemindBefore(now);
-        for (Reminder reminder : reminders) {
-            User user = userRepository.findById(reminder.getUser_id()).orElse(null);
-            if (user != null && !reminder.isSent()) {
-                reminderService.markAsSent(reminder);
-                emailService.sendEmail(user.getEmail(), reminder.getTitle(), reminder.getDescription());
-                if (user.getTelegramID() != null) {
-                    telegramService.sendTelegramMessage(user.getTelegramID(), reminder.getTitle(),
-                            reminder.getDescription());
+        List<Reminder> reminders = reminderRepository.findByRemindBefore(now)
+                .stream().filter(r -> !r.isSent()).toList();
+        if (!reminders.isEmpty()) {
+            for (Reminder reminder : reminders) {
+                User user = userRepository.findById(reminder.getUser_id()).orElse(null);
+                if (user != null && !reminder.isSent()) {
+                    reminderService.markAsSent(reminder);
+                    emailService.sendEmail(user.getEmail(), reminder.getTitle(), reminder.getDescription());
+                    if (user.getTelegramID() != null) {
+                        telegramService.sendTelegramMessage(user.getTelegramID(), reminder.getTitle(),
+                                reminder.getDescription());
+                    }
                 }
             }
         }
